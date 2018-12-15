@@ -1,7 +1,7 @@
 import Pyro4
 from tkinter import *
 import pygame
-
+import serpent
 class Cliente:
     def __init__(self, master=None):
         # conectando ao servidor
@@ -20,8 +20,17 @@ class Cliente:
         tts_server = Pyro4.Proxy("PYRO:ttsserver@localhost:3000")
         audio = tts_server.speak(self.text.get())
         pygame.init()
-        som = pygame.mixer.Sound(audio)
-        som.play()
+        arq = open("teste.mp3", "ab")
+        for i in audio:
+            b = serpent.tobytes(i)
+            arq.write(b)
+            print(b)
+        arq.close()
+        #pygame.mixer.Sound("teste.mp3").play()
+        # pygame.mixer.Sound(buffer=i['data'])
+        #pygame.init()
+        # som = pygame.mixer.Sound(audio)
+        # som.play()
 
 
 root = Tk()
